@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Supplimental Charts</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Custom styles for this template -->
+  <link href="css/simple-sidebar.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+  <div class="d-flex" id="wrapper">
+
+    <!-- Sidebar -->
+    <div class="bg-light border-right" id="sidebar-wrapper">
+      <div class="sidebar-heading">Individual Project</div>
+      <div class="list-group list-group-flush">
+        <a href="Dashboard.html" class="list-group-item list-group-item-action bg-light">Dashboard</a>
+        <a href="Spending_in_Dollars.html" class="list-group-item list-group-item-action bg-light">Spending in Dollars</a>
+        <a href="Spending_Percent_GDP.html" class="list-group-item list-group-item-action bg-light">Spending as a % of GDP</a>
+        <a href="Spending_per_Capita.html" class="list-group-item list-group-item-action bg-light">Spending per Capita</a>
+        <a href="Supplimental_Charts.html" class="list-group-item list-group-item-action bg-light">Supplimental Charts</a>
+        <a href="About.html" class="list-group-item list-group-item-action bg-light">About</a>
+      </div>
+    </div>
+    <!-- /#sidebar-wrapper -->
+
+    <!-- Page Content -->
+    <div id="page-content-wrapper">
+
+      <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+        <button class="btn btn-primary" id="menu-toggle">Toggle Menu</button>
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+            <li class="nav-item active">
+              <a class="nav-link" href="Dashboard.html">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Link</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Dropdown
+              </a>
+              <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="#">Action</a>
+                <a class="dropdown-item" href="#">Another action</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#">Something else here</a>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </nav>
+
+      <div class="container-fluid">
+        <h1 class="mt-4">Supplimental Charts</h1>
+
+
+        <p>The starting state of the menu will appear collapsed on smaller screens, and will appear non-collapsed on larger screens. When toggled using the button below, the menu will change.</p>
+        <p>Make sure to keep all page content within the <code>#page-content-wrapper</code>. The top navbar is optional, and just for demonstration. Just create an element with the <code>#menu-toggle</code> ID which will toggle the menu when clicked.</p>
+        
+
+        <h1>GDP vs Military, Healthcare and Education Spending for Top 10 G20 Countries</h1>
+        <!--Div that will hold the dashboard-->
+        <div id="gdp_spending_dashboard_div">
+        <!--Divs that will hold each control and chart-->
+        <div id="gdp_spending_filter_div"></div>
+        <div id="gdp_spending_chart_div"></div>
+
+        <h1>Military Spending vs Education and Healthcare Spending for Top 10 G20 Countries</h1>
+        <!--Div that will hold the dashboard-->
+        <div id="mil_vs_health_and_edu_dashboard_div">
+        <!--Divs that will hold each control and chart-->
+        <div id="mil_vs_health_and_edu_filter_div"></div>
+        <div id="mil_vs_health_and_edu_chart_div"></div>
+
+      </div>
+    </div>
+    <!-- /#page-content-wrapper -->
+
+  </div>
+  <!-- /#wrapper -->
+
+  <!-- Bootstrap core JavaScript -->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Menu Toggle Script -->
+  <script src="https://www.gstatic.com/charts/loader.js"></script>
+
+  <script>
+    $("#menu-toggle").click(function(e) {
+      e.preventDefault();
+      $("#wrapper").toggleClass("toggled");
+    });
+  </script>
+
+  <script>
+    google.charts.load('current', {'packages':['corechart','controls','treemap']});
+    google.charts.setOnLoadCallback(drawAllSheets);
+
+        function drawAllSheets() {
+            drawSheetName('viztest', 'SELECT A, B, O, W'   , gdpSpendingdrawDashboard);
+            drawSheetName('viztest', 'SELECT A, B, Q, X'   , milVsHealthAndEdudrawDashboard);
+            drawSheetName('viztest', 'SELECT A, B, D, P'   , eduVsGDPCapitaDashboard);
+            drawSheetName('viztest', 'SELECT A, B, J, P'   , healthVsGDPCapitaDashboard);
+            drawSheetName('viztest', 'SELECT A, B, R, P'   , milVsGDPCapitaDashboard);
+        } //drawAllSheets
+
+        function drawSheetName(sheetName, query, responseHandler) {
+            var queryString = encodeURIComponent(query);
+            var query = new google.visualization.Query(
+                "https://docs.google.com/spreadsheets/d/1srvH_B1s4NMo87h0f34CEGzrKjz2kDqfE3zLWtVjz8w/gviz/tq?sheet=" 
+                    + sheetName + "&headers=1&tq=" + queryString); //Query
+            query.send(responseHandler);
+        } //drawSheetName
+
+
+
+
+
+        google.charts.setOnLoadCallback(gdpSpendingdrawDashboard);
+
+        function gdpSpendingdrawDashboard(response) {
+            var data = response.getDataTable();
+
+             // Create a dashboard.
+            var dashboard = new google.visualization.Dashboard(
+            document.getElementById('gdp_spending_dashboard_div'));
+
+            var nameSelect = new google.visualization.ControlWrapper({
+                'controlType': 'CategoryFilter',
+                'containerId': 'gdp_spending_filter_div',
+                'options': {
+                'filterColumnLabel': 'Year',
+                'ui': {
+                    'allowMultiple': false
+                  }
+                }
+            });
+
+             // Create a pie chart, passing some options
+            var columnChart = new google.visualization.ChartWrapper({
+                'chartType': 'ColumnChart',
+                'containerId': 'gdp_spending_chart_div',
+                'options': {
+                'colors': ['#FF7A33','#33DDFF'],
+                'width': 600,
+                'height': 600,
+                'legend': 'right',
+                'bars': {griypwidth: "95%"},
+                'vAxis': {title: 'Spending in Current US $'},
+                'hAxis': {title: 'Country'}
+                },
+                'view': {'columns': [0, 2, 3]}
+            });
+
+            dashboard.bind(nameSelect, columnChart);
+
+            // Draw the dashboard.
+            dashboard.draw(data);
+        }
+
+
+
+
+
+        google.charts.setOnLoadCallback(eduVsGDPCapitaDashboard);
+
+        function eduVsGDPCapitaDashboard(response) {
+            var data = response.getDataTable();
+
+             // Create a dashboard.
+            var dashboard = new google.visualization.Dashboard(
+            document.getElementById('edu_vs_gdp_capita_dashboard_div'));
+
+            var nameSelect = new google.visualization.ControlWrapper({
+                'controlType': 'CategoryFilter',
+                'containerId': 'edu_vs_gdp_capita_filter_div',
+                'options': {
+                'filterColumnLabel': 'Year',
+                'ui': {
+                    'allowMultiple': false
+                  }
+                }
+            });
+
+             // Create a pie chart, passing some options
+            var columnChart = new google.visualization.ChartWrapper({
+                'chartType': 'ColumnChart',
+                'containerId': 'edu_vs_gdp_capita_chart_div',
+                'options': {
+                'colors': ['#FF7A33','#33DDFF'],
+                'width': 600,
+                'height': 600,
+                'legend': 'right',
+                'bars': {griypwidth: "95%"},
+                'vAxis': {title: 'Spending in Current US $'},
+                'hAxis': {title: 'Country'}
+                },
+                'view': {'columns': [0, 2, 3]}
+            });
+
+            dashboard.bind(nameSelect, columnChart);
+
+            // Draw the dashboard.
+            dashboard.draw(data);
+        }
+
+
+
+
+
+        google.charts.setOnLoadCallback(healthVsGDPCapitaDashboard);
+
+        function healthVsGDPCapitaDashboard(response) {
+            var data = response.getDataTable();
+
+             // Create a dashboard.
+            var dashboard = new google.visualization.Dashboard(
+            document.getElementById('health_vs_gdp_capita_dashboard_div'));
+
+            var nameSelect = new google.visualization.ControlWrapper({
+                'controlType': 'CategoryFilter',
+                'containerId': 'health_vs_gdp_capita_filter_div',
+                'options': {
+                'filterColumnLabel': 'Year',
+                'ui': {
+                    'allowMultiple': false
+                  }
+                }
+            });
+
+             // Create a pie chart, passing some options
+            var columnChart = new google.visualization.ChartWrapper({
+                'chartType': 'ColumnChart',
+                'containerId': 'health_vs_gdp_capita_chart_div',
+                'options': {
+                'colors': ['#FF7A33','#33DDFF'],
+                'width': 600,
+                'height': 600,
+                'legend': 'right',
+                'bars': {griypwidth: "95%"},
+                'vAxis': {title: 'Spending per Capita in Current US $'},
+                'hAxis': {title: 'Country'},
+                'view': {'columns': [0, 2, 3]}
+                }
+            });
+
+            dashboard.bind(nameSelect, columnChart);
+
+            // Draw the dashboard.
+            dashboard.draw(data);
+        }
+
+
+
+
+
+        google.charts.setOnLoadCallback(milVsGDPCapitaDashboard);
+
+        function milVsGDPCapitaDashboard(response) {
+            var data = response.getDataTable();
+
+             // Create a dashboard.
+            var dashboard = new google.visualization.Dashboard(
+            document.getElementById('mil_vs_gdp_capita_dashboard_div'));
+
+            var nameSelect = new google.visualization.ControlWrapper({
+                'controlType': 'CategoryFilter',
+                'containerId': 'mil_vs_gdp_capita_filter_div',
+                'options': {
+                'filterColumnLabel': 'Year',
+                'ui': {
+                    'allowMultiple': false
+                  }
+                }
+            });
+
+             // Create a pie chart, passing some options
+            var columnChart = new google.visualization.ChartWrapper({
+                'chartType': 'ColumnChart',
+                'containerId': 'mil_vs_gdp_capita_chart_div',
+                'options': {
+                'colors': ['#FF7A33','#33DDFF'],
+                'width': 600,
+                'height': 600,
+                'legend': 'right',
+                'bars': {griypwidth: "95%"},
+                'vAxis': {title: 'Spending in Current US $'},
+                'hAxis': {title: 'Country'}
+                },
+                'view': {'columns': [0, 2, 3]}
+            });
+
+            dashboard.bind(nameSelect, columnChart);
+
+            // Draw the dashboard.
+            dashboard.draw(data);
+        }
+
+        
+
+
+        google.charts.setOnLoadCallback(milVsHealthAndEdudrawDashboard);
+        
+        function milVsHealthAndEdudrawDashboard(response) {
+            var data = response.getDataTable();
+
+             // Create a dashboard.
+            var dashboard = new google.visualization.Dashboard(
+            document.getElementById('mil_vs_health_and_edu_dashboard_div'));
+
+            var nameSelect = new google.visualization.ControlWrapper({
+                'controlType': 'CategoryFilter',
+                'containerId': 'mil_vs_health_and_edu_filter_div',
+                'options': {
+                'filterColumnLabel': 'Year',
+                  'ui': {
+                    'allowMultiple': false
+                  }
+                }
+            });
+
+             // Create a pie chart, passing some options
+            var columnChart = new google.visualization.ChartWrapper({
+                'chartType': 'ColumnChart',
+                'containerId': 'mil_vs_health_and_edu_chart_div',
+                'options': {
+                'colors': ['#FF7A33','#33DDFF'],
+                'width': 600,
+                'height': 600,
+                'legend': 'right',
+                'bars': {griypwidth: "95%"},
+                'vAxis': {title: 'Spending in Current US $'},
+                'hAxis': {title: 'Country'}
+                },
+                'view': {'columns': [0, 2, 3]}
+            });
+
+            dashboard.bind(nameSelect, columnChart);
+
+            // Draw the dashboard.
+            dashboard.draw(data);
+        }
+    </script>
+  </script>
+</body>
+</html>

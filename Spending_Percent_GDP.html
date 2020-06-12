@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Spending as a Percent of GDP</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Custom styles for this template -->
+  <link href="css/simple-sidebar.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+  <div class="d-flex" id="wrapper">
+
+    <!-- Sidebar -->
+    <div class="bg-light border-right" id="sidebar-wrapper">
+      <div class="sidebar-heading">Individual Project</div>
+      <div class="list-group list-group-flush">
+        <a href="Dashboard.html" class="list-group-item list-group-item-action bg-light">Dashboard</a>
+        <a href="Spending_in_Dollars.html" class="list-group-item list-group-item-action bg-light">Spending in Dollars</a>
+        <a href="Spending_Percent_GDP.html" class="list-group-item list-group-item-action bg-light">Spending as a % of GDP</a>
+        <a href="Spending_per_Capita.html" class="list-group-item list-group-item-action bg-light">Spending per Capita</a>
+        <a href="Supplimental_Charts.html" class="list-group-item list-group-item-action bg-light">Supplimental Charts</a>
+        <a href="About.html" class="list-group-item list-group-item-action bg-light">About</a>
+      </div>
+    </div>
+    <!-- /#sidebar-wrapper -->
+
+    <!-- Page Content -->
+    <div id="page-content-wrapper">
+
+      <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+        <button class="btn btn-primary" id="menu-toggle">Toggle Menu</button>
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+            <li class="nav-item active">
+              <a class="nav-link" href="Dashboard.html">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Link</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Dropdown
+              </a>
+              <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="#">Action</a>
+                <a class="dropdown-item" href="#">Another action</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#">Something else here</a>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </nav>
+
+      <div class="container-fluid">
+        <h1 class="mt-4">Spending as a Percent of GDP</h1>
+
+        <p>The following graphs represent an analysis of dollars spent as a percentage of GDP in Education, Healthcare and Military for the top 10 G20 Countries.</p>
+
+        <h1>Spending as a Percent of GDP for Top 10 G20 Countries</h1>
+        <!--Div that will hold the dashboard-->
+        <div id="percent_gdp_dashboard_div">
+        <!--Divs that will hold each control and chart-->
+        <div id="percent_gdp_filter_div"></div>
+        <div id="percent_gdp_chart_div"></div>
+
+        <h1>Change in Spending as a Percent of GDP for Top 10 G20 Countries</h1>
+        <!--Div that will hold the dashboard-->
+        <div id="capita_change_dashboard_div">
+        <!--Divs that will hold each control and chart-->
+        <div id="capita_change_filter_div"></div>
+        <div id="capita_change_chart_div"></div>
+
+        <h1>Education Spending for Top 10 G20 Countries</h1>
+        <!--Div that will hold the dashboard-->
+        <div id="education_geo_dashboard_div">
+        <!--Divs that will hold each control and chart-->
+        <div id="education_geo_filter_div"></div>
+        <div id="education_geo_chart_div"></div>
+
+        <h1>Healthcare Spending for Top 10 G20 Countries</h1>
+        <!--Div that will hold the dashboard-->
+        <div id="health_geo_dashboard_div">
+        <!--Divs that will hold each control and chart-->
+        <div id="health_geo_filter_div"></div>
+        <div id="health_geo_chart_div"></div>
+
+        <h1>Military Spending for Top 10 G20 Countries</h1>
+        <!--Div that will hold the dashboard-->
+        <div id="military_geo_dashboard_div">
+        <!--Divs that will hold each control and chart-->
+        <div id="military_geo_filter_div"></div>
+        <div id="military_geo_chart_div"></div>
+
+      </div>
+    </div>
+    <!-- /#page-content-wrapper -->
+
+  </div>
+  <!-- /#wrapper -->
+
+  <!-- Bootstrap core JavaScript -->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Menu Toggle Script -->
+  <script src="https://www.gstatic.com/charts/loader.js"></script>
+
+  <script>
+    $("#menu-toggle").click(function(e) {
+      e.preventDefault();
+      $("#wrapper").toggleClass("toggled");
+    });
+  </script>
+
+  <script>
+    google.charts.load('current', {'packages':['corechart','controls','treemap']});
+    google.charts.setOnLoadCallback(drawAllSheets);
+
+        function drawAllSheets() {
+            drawSheetName('viztest', 'SELECT A, B, E, K, S'   , percentGDPdrawDashboard);
+            drawSheetName('viztest', 'SELECT A, E, B'   , educationGeodrawDashboard);
+            drawSheetName('viztest', 'SELECT A, K, B'   , healthGeodrawDashboard);
+            drawSheetName('viztest', 'SELECT A, S, B'   , militaryGeodrawDashboard);
+            drawSheetName('viztest', 'SELECT A, B, H, N, V'   , percentchangedrawDashboard);
+        } //drawAllSheets
+
+        function drawSheetName(sheetName, query, responseHandler) {
+            var queryString = encodeURIComponent(query);
+            var query = new google.visualization.Query(
+                "https://docs.google.com/spreadsheets/d/1srvH_B1s4NMo87h0f34CEGzrKjz2kDqfE3zLWtVjz8w/gviz/tq?sheet=" 
+                    + sheetName + "&headers=1&tq=" + queryString); //Query
+            query.send(responseHandler);
+        } //drawSheetName
+
+        google.charts.setOnLoadCallback(percentGDPdrawDashboard);
+
+        function percentGDPdrawDashboard(response) {
+            var data = response.getDataTable();
+
+            // Create a dashboard.
+            var dashboard = new google.visualization.Dashboard(
+            document.getElementById('percent_gdp_dashboard_div'));
+
+            var nameSelect = new google.visualization.ControlWrapper({
+                'controlType': 'CategoryFilter',
+                'containerId': 'percent_gdp_filter_div',
+                'options': {
+                'filterColumnLabel': 'Year',
+                'ui': {
+                    'allowMultiple': false
+                  }
+                }
+            });
+
+            // Create a pie chart, passing some options
+            var columnChart = new google.visualization.ChartWrapper({
+                'chartType': 'ColumnChart',
+                'containerId': 'percent_gdp_chart_div',
+                'options': {
+                'colors': ['#FF7A33','#33DDFF','#33FF71'],
+                'width': 1200,
+                'height': 600,
+                'legend': 'right',
+                'bars': {griypwidth: "95%"},
+                'vAxis': {title: 'Spending as a Percent of GDP'},
+                'hAxis': {title: 'Country'}
+                },
+                'view': {'columns': [0, 2, 3, 4]}
+            });
+
+            dashboard.bind(nameSelect, columnChart);
+
+            // Draw the dashboard.
+            dashboard.draw(data);
+        }
+        google.charts.setOnLoadCallback(educationGeodrawDashboard);
+
+          function educationGeodrawDashboard(response) {
+              var data = response.getDataTable();
+
+              // Create a dashboard.
+              var dashboard = new google.visualization.Dashboard(
+              document.getElementById('education_geo_dashboard_div'));
+
+              var nameSelect = new google.visualization.ControlWrapper({
+                  'controlType': 'CategoryFilter',
+                  'containerId': 'education_geo_filter_div',
+                  'options': {
+                  'filterColumnLabel': 'Year',
+                  'ui': {
+                      'allowMultiple': false
+                    }
+                  }
+              });
+
+              // Create a pie chart, passing some options
+              var geoChart = new google.visualization.ChartWrapper({
+                  'chartType': 'GeoChart',
+                  'containerId': 'education_geo_chart_div',
+                  'options': {
+                  'colors': ['#FF7A33'],
+                  'width': 1200,
+                  'height': 600
+                  },
+                  'view': {'columns': [0, 1]}
+              });
+
+              dashboard.bind(nameSelect, geoChart);
+
+              // Draw the dashboard.
+              dashboard.draw(data);
+          }
+
+
+          google.charts.setOnLoadCallback(healthGeodrawDashboard);
+
+          function healthGeodrawDashboard(response) {
+              var data = response.getDataTable();
+
+              // Create a dashboard.
+              var dashboard = new google.visualization.Dashboard(
+              document.getElementById('health_geo_dashboard_div'));
+
+              var nameSelect = new google.visualization.ControlWrapper({
+                  'controlType': 'CategoryFilter',
+                  'containerId': 'health_geo_filter_div',
+                  'options': {
+                  'filterColumnLabel': 'Year',
+                  'ui': {
+                      'allowMultiple': false
+                    }
+                  }
+              });
+
+              // Create a pie chart, passing some options
+              var geoChart = new google.visualization.ChartWrapper({
+                  'chartType': 'GeoChart',
+                  'containerId': 'health_geo_chart_div',
+                  'options': {
+                  'colors': ['#33DDFF'],
+                  'width': 1200,
+                  'height': 600
+                  },
+                  'view': {'columns': [0, 1]}
+              });
+
+              dashboard.bind(nameSelect, geoChart);
+
+              // Draw the dashboard.
+              dashboard.draw(data);
+          }
+
+
+          google.charts.setOnLoadCallback(militaryGeodrawDashboard);
+
+          function militaryGeodrawDashboard(response) {
+              var data = response.getDataTable();
+
+              // Create a dashboard.
+              var dashboard = new google.visualization.Dashboard(
+              document.getElementById('military_geo_dashboard_div'));
+
+              var nameSelect = new google.visualization.ControlWrapper({
+                  'controlType': 'CategoryFilter',
+                  'containerId': 'military_geo_filter_div',
+                  'options': {
+                  'filterColumnLabel': 'Year',
+                  'ui': {
+                      'allowMultiple': false
+                    }
+                  }
+              });
+
+              // Create a pie chart, passing some options
+              var geoChart = new google.visualization.ChartWrapper({
+                  'chartType': 'GeoChart',
+                  'containerId': 'military_geo_chart_div',
+                  'options': {
+                  'colors': ['#33FF71'],
+                  'width': 1200,
+                  'height': 600
+                  },
+                  'view': {'columns': [0, 1]}
+              });
+
+              dashboard.bind(nameSelect, geoChart);
+
+              // Draw the dashboard.
+              dashboard.draw(data);
+          }
+
+          google.charts.setOnLoadCallback( percentchangedrawDashboard);
+
+          function percentchangedrawDashboard(response) {
+              var data = response.getDataTable();
+
+              // Create a dashboard.
+              var dashboard = new google.visualization.Dashboard(
+              document.getElementById('capita_change_dashboard_div'));
+
+              var nameSelect = new google.visualization.ControlWrapper({
+                  'controlType': 'CategoryFilter',
+                  'containerId': 'capita_change_filter_div',
+                  'options': {
+                  'filterColumnLabel': 'Country Name',
+                  'ui': {
+                      'allowMultiple': false
+                    }
+                  }
+              });
+
+              // Create a pie chart, passing some options
+              var columnChart = new google.visualization.ChartWrapper({
+                  'chartType': 'BarChart',
+                  'containerId': 'capita_change_chart_div',
+                  'options': {
+                  'colors': ['#FF7A33','#33DDFF','#33FF71'],
+                  'width': 1200,
+                  'height': 600,
+                  'legend': 'right',
+                  'bars': {griypwidth: "95%"},
+                  'vAxis': {title: 'Year'},
+                  'hAxis': {title: 'Change in Spending (%)'}
+                  },
+                  'view': {'columns': [1, 2, 3, 4]}
+              });
+
+              dashboard.bind(nameSelect, columnChart);
+
+              // Draw the dashboard.
+              dashboard.draw(data);
+          }
+
+
+    </script>
+  </script>
+</body>
+</html>
